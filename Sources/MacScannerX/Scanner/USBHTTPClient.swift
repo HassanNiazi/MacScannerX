@@ -131,7 +131,7 @@ final class USBHTTPClient {
 
         var head = "\(method) \(target) HTTP/1.1\r\n"
         head += "Host: localhost\r\n"
-        head += "User-Agent: VueScanX/1.0\r\n"
+        head += "User-Agent: MacScannerX/1.0\r\n"
         head += "Accept: */*\r\n"
         head += "Connection: close\r\n"
         if let body {

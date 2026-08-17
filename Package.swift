@@ -2,10 +2,10 @@
 import PackageDescription
 
 let package = Package(
-    name: "VueScanX",
+    name: "MacScannerX",
     platforms: [.macOS(.v14)],
     products: [
-        .executable(name: "VueScanX", targets: ["VueScanX"])
+        .executable(name: "MacScannerX", targets: ["MacScannerX"])
     ],
     targets: [
         .target(
@@ -17,9 +17,9 @@ let package = Package(
             ]
         ),
         .executableTarget(
-            name: "VueScanX",
+            name: "MacScannerX",
             dependencies: ["CHPUSB"],
-            path: "Sources/VueScanX",
+            path: "Sources/MacScannerX",
             swiftSettings: [
                 .swiftLanguageMode(.v5)
             ],

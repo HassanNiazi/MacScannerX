@@ -200,13 +200,13 @@ final class ImageCaptureBackend: NSObject, ScannerBackend {
 
         device.transferMode = .fileBased
         device.downloadsDirectory = Self.spoolDirectory
-        device.documentName = request.isPreview ? "vsx-preview" : "vsx-scan"
+        device.documentName = request.isPreview ? "msx-preview" : "msx-scan"
         device.documentUTI = kUTTypeTIFF as String
     }
 
     static let spoolDirectory: URL = {
         let dir = FileManager.default.temporaryDirectory
-            .appendingPathComponent("VueScanX-spool", isDirectory: true)
+            .appendingPathComponent("MacScannerX-spool", isDirectory: true)
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         return dir
     }()

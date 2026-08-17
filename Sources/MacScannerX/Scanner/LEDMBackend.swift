@@ -18,7 +18,7 @@ import CHPUSB
 /// All USB work happens on a dedicated serial queue; the calls block.
 final class LEDMBackend: ScannerBackend {
 
-    private let queue = DispatchQueue(label: "com.local.vuescanx.ledm", qos: .userInitiated)
+    private let queue = DispatchQueue(label: "com.local.macscannerx.ledm", qos: .userInitiated)
     private var onChange: (([ScannerDeviceInfo]) -> Void)?
     private var timer: DispatchSourceTimer?
     private var capabilityCache: [String: LEDMCapabilities] = [:]

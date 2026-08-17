@@ -47,11 +47,11 @@ struct PrefsPanel: View {
                  The 2300 series is a flatbed-only all-in-one: no feeder, no duplex, \
                  no transparency unit. Its optical sensor is 1200 × 1200 dpi with an \
                  A4/Letter platen. Over USB it appears through Image Capture; over \
-                 Wi-Fi it advertises AirScan (_uscan._tcp) and VueScanX drives it \
+                 Wi-Fi it advertises AirScan (_uscan._tcp) and MacScannerX drives it \
                  directly with eSCL.
 
                  If the scanner does not appear: confirm it is on the same Wi-Fi \
-                 network, then allow VueScanX under System Settings › Privacy & \
+                 network, then allow MacScannerX under System Settings › Privacy & \
                  Security › Local Network.
                  """)
                 .font(.system(size: 10))

@@ -5,7 +5,7 @@ import CoreGraphics
 import ImageIO
 import UniformTypeIdentifiers
 
-/// `VueScanX --selftest [outputDir]` drives the whole non-interactive path —
+/// `MacScannerX --selftest [outputDir]` drives the whole non-interactive path —
 /// simulated acquisition, the Core Image pipeline, and every output format —
 /// then renders the real UI offscreen. Used to verify the app end to end on a
 /// machine with no scanner attached and no screen-recording permission.
@@ -24,14 +24,14 @@ enum SelfTest {
         CommandLine.arguments.contains("--testscan")
     }
 
-    /// `VueScanX --testscan [dpi] [out.jpg]` — acquire one page from the first
+    /// `MacScannerX --testscan [dpi] [out.jpg]` — acquire one page from the first
     /// real scanner found, run it through the full processing pipeline, and
     /// write it out. Verifies the hardware path end to end without the GUI.
     static func testScan() async -> Int32 {
         let args = CommandLine.arguments
         let i = args.firstIndex(of: "--testscan")!
         let dpi = (args.count > i + 1 ? Int(args[i + 1]) : nil) ?? 150
-        let outPath = args.count > i + 2 ? args[i + 2] : "/tmp/vuescanx-testscan.jpg"
+        let outPath = args.count > i + 2 ? args[i + 2] : "/tmp/macscannerx-testscan.jpg"
 
         let ledm = LEDMBackend()
         var found: [ScannerDeviceInfo] = []
@@ -85,7 +85,7 @@ enum SelfTest {
         }
     }
 
-    /// `VueScanX --devices [seconds]` — browse for scanners, print what each
+    /// `MacScannerX --devices [seconds]` — browse for scanners, print what each
     /// backend sees, and probe the first real one for its true capabilities.
     /// The fastest way to tell whether a scanner problem is discovery or
     /// acquisition.
@@ -171,12 +171,12 @@ enum SelfTest {
 
     static func run() async -> Int32 {
         let outDir = customOutputDirectory() ?? FileManager.default.temporaryDirectory
-            .appendingPathComponent("VueScanX-selftest", isDirectory: true)
+            .appendingPathComponent("MacScannerX-selftest", isDirectory: true)
         try? FileManager.default.removeItem(at: outDir)
         try? FileManager.default.createDirectory(at: outDir, withIntermediateDirectories: true)
 
         var failures = 0
-        print("VueScanX self-test")
+        print("MacScannerX self-test")
         print("output: \(outDir.path)\n")
 
         failures += await checkAcquisition()

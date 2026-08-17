@@ -149,7 +149,7 @@ struct OutputWriter {
             props[kCGImagePropertyTIFFDictionary] = [
                 kCGImagePropertyTIFFXResolution: resolution,
                 kCGImagePropertyTIFFYResolution: resolution,
-                kCGImagePropertyTIFFSoftware: "VueScanX"
+                kCGImagePropertyTIFFSoftware: "MacScannerX"
             ]
         }
         if type == .tiff {
@@ -163,7 +163,7 @@ struct OutputWriter {
                 kCGImagePropertyTIFFCompression: compression,
                 kCGImagePropertyTIFFXResolution: resolution,
                 kCGImagePropertyTIFFYResolution: resolution,
-                kCGImagePropertyTIFFSoftware: "VueScanX"
+                kCGImagePropertyTIFFSoftware: "MacScannerX"
             ]
         }
         return props
@@ -176,7 +176,7 @@ struct OutputWriter {
                               in: settings.outputFolder)
 
         var info: [CFString: Any] = [
-            kCGPDFContextCreator: "VueScanX",
+            kCGPDFContextCreator: "MacScannerX",
             kCGPDFContextTitle: url.deletingPathExtension().lastPathComponent
         ]
         if let text, !text.isEmpty {

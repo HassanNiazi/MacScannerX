@@ -179,7 +179,7 @@ enum BatchMode: String, CaseIterable, Identifiable, Codable {
 // MARK: - Settings container
 
 /// Every user-adjustable knob, grouped the way VueScan groups them in its tabs.
-/// Persisted verbatim to `~/Library/Application Support/VueScanX/settings.json`.
+/// Persisted verbatim to `~/Library/Application Support/MacScannerX/settings.json`.
 struct ScanSettings: Codable, Equatable {
 
     // ---- Input ------------------------------------------------------------
@@ -281,7 +281,7 @@ extension ScanSettings {
     static var storeURL: URL {
         let base = FileManager.default
             .urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
-            .appendingPathComponent("VueScanX", isDirectory: true)
+            .appendingPathComponent("MacScannerX", isDirectory: true)
         try? FileManager.default.createDirectory(at: base, withIntermediateDirectories: true)
         return base.appendingPathComponent("settings.json")
     }

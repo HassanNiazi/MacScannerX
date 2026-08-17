@@ -67,7 +67,7 @@ final class ScanController: ObservableObject {
     init() {
         settings = ScanSettings.load()
         startDiscovery()
-        note("VueScanX ready. Looking for scanners…", .info)
+        note("MacScannerX ready. Looking for scanners…", .info)
     }
 
     // MARK: Discovery

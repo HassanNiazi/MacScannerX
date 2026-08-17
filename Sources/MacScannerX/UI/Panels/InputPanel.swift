@@ -7,7 +7,7 @@ struct InputPanel: View {
         VStack(alignment: .leading, spacing: 0) {
             SectionHeader(title: "Device")
 
-            OptionRow(label: "Task", help: "What VueScanX does once the page is acquired") {
+            OptionRow(label: "Task", help: "What MacScannerX does once the page is acquired") {
                 Picker("", selection: $controller.settings.task) {
                     ForEach(ScanTask.allCases) { Text($0.rawValue).tag($0) }
                 }.labelsHidden().controlSize(.small)

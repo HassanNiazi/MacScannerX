@@ -3,13 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleName</key>
-	<string>VueScanX</string>
+	<string>MacScannerX</string>
 	<key>CFBundleDisplayName</key>
-	<string>VueScanX</string>
+	<string>MacScannerX</string>
 	<key>CFBundleExecutable</key>
-	<string>VueScanX</string>
+	<string>MacScannerX</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.local.vuescanx</string>
+	<string>com.local.macscannerx</string>
+	<key>CFBundleIconFile</key>
+	<string>AppIcon</string>
+	<key>CFBundleIconName</key>
+	<string>AppIcon</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
@@ -27,7 +31,7 @@
 	<key>NSSupportsAutomaticTermination</key>
 	<false/>
 	<key>NSLocalNetworkUsageDescription</key>
-	<string>VueScanX finds AirScan-capable scanners such as the HP DeskJet 2300 series on your local network.</string>
+	<string>MacScannerX finds AirScan-capable scanners such as the HP DeskJet 2300 series on your local network.</string>
 	<key>NSBonjourServices</key>
 	<array>
 		<string>_uscan._tcp</string>
@@ -35,11 +39,11 @@
 		<string>_scanner._tcp</string>
 	</array>
 	<key>NSDesktopFolderUsageDescription</key>
-	<string>VueScanX saves scanned files where you choose.</string>
+	<string>MacScannerX saves scanned files where you choose.</string>
 	<key>NSDocumentsFolderUsageDescription</key>
-	<string>VueScanX saves scanned files where you choose.</string>
+	<string>MacScannerX saves scanned files where you choose.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>VueScanX can save scans into your Pictures folder.</string>
+	<string>MacScannerX can save scans into your Pictures folder.</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsLocalNetworking</key>

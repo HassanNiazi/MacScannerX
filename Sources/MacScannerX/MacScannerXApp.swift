@@ -2,12 +2,12 @@ import SwiftUI
 import AppKit
 
 @main
-struct VueScanXApp: App {
+struct MacScannerXApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var delegate
     @StateObject private var controller = ScanController()
 
     var body: some Scene {
-        WindowGroup("VueScanX") {
+        WindowGroup("MacScannerX") {
             ContentView(controller: controller)
         }
         .defaultSize(width: 1180, height: 800)
@@ -32,7 +32,7 @@ struct VueScanXApp: App {
             }
 
             CommandGroup(replacing: .help) {
-                Button("VueScanX Help") {
+                Button("MacScannerX Help") {
                     NSWorkspace.shared.open(URL(string: "https://support.hp.com")!)
                 }
             }
@@ -64,7 +64,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     /// that once opened at the minimum size stays cramped forever. Size and
     /// centre it once, then leave the user's own resizing alone.
     private func sizeWindowOnFirstRun() {
-        let key = "VueScanXDidSizeWindow"
+        let key = "MacScannerXDidSizeWindow"
         guard !UserDefaults.standard.bool(forKey: key) else { return }
         UserDefaults.standard.set(true, forKey: key)
 

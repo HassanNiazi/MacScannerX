@@ -1,4 +1,4 @@
-# VueScanX
+# MacScannerX
 
 A VueScan-style scanning app for macOS, built for the **HP DeskJet 2300 series**.
 
@@ -6,7 +6,7 @@ Native SwiftUI. No Xcode required — Command Line Tools and SwiftPM are enough.
 
 ```bash
 ./build.sh release
-open build/VueScanX.app
+open build/MacScannerX.app
 ```
 
 ---
@@ -152,7 +152,7 @@ draw the recognised text in rendering mode 3 — invisible, but selectable.
 The binary ships a self-test that drives the whole non-interactive path:
 
 ```bash
-build/VueScanX.app/Contents/MacOS/VueScanX --selftest /tmp/vsx-check
+build/MacScannerX.app/Contents/MacOS/MacScannerX --selftest /tmp/msx-check
 ```
 
 ```
@@ -178,10 +178,10 @@ Two hardware diagnostics, which do touch the scanner:
 
 ```bash
 # What each backend can see, plus a capability probe of the first real device.
-build/VueScanX.app/Contents/MacOS/VueScanX --devices 8
+build/MacScannerX.app/Contents/MacOS/MacScannerX --devices 8
 
 # Acquire one real page, run the full pipeline, write it out.
-build/VueScanX.app/Contents/MacOS/VueScanX --testscan 200 /tmp/page.jpg
+build/MacScannerX.app/Contents/MacOS/MacScannerX --testscan 200 /tmp/page.jpg
 ```
 
 Verified against a real DeskJet 2300 over USB:
@@ -207,12 +207,12 @@ read live from `/Scan/ScanCaps`.
 - **USB**: driven over HP LEDM. This works with no HP software and no ICA
   driver — and it is the *only* thing that works, since the device has no
   IPP-USB interface and macOS therefore exposes no scanner for it at all.
-- **Wi-Fi**: advertises AirScan; VueScanX drives it over standard eSCL.
+- **Wi-Fi**: advertises AirScan; MacScannerX drives it over standard eSCL.
 
 If the scanner does not appear:
 
 - quit **HP Smart** and **HP Easy Scan** — they hold the USB interface open;
-- over Wi-Fi, allow VueScanX under **System Settings → Privacy & Security →
+- over Wi-Fi, allow MacScannerX under **System Settings → Privacy & Security →
   Local Network**;
 - press the refresh button next to the Source picker to re-browse, or run
   `--devices` for a per-backend report.
@@ -230,12 +230,15 @@ Package.swift
 build.sh                       compile + assemble + ad-hoc sign the .app
 Resources/
   Info.plist                   bundle id, Bonjour services, local-network usage
-  VueScanX.entitlements        unsandboxed; USB + network client
+  MacScannerX.entitlements     unsandboxed; USB + network client
+  AppIcon.icns                 app icon, rendered by Tools/MakeAppIcon.swift
+Tools/
+  MakeAppIcon.swift            draws the icon in Core Graphics, one slot per size
 Sources/CHPUSB/
   include/hpusb.h              C API: enumerate, open, bulk read/write, drain
   hpusb.c                      IOKit IOUSBLib transport for HP's LEDM interface
-Sources/VueScanX/
-  VueScanApp.swift             @main, menu commands, window sizing
+Sources/MacScannerX/
+  MacScannerXApp.swift         @main, menu commands, window sizing
   SelfTest.swift               --selftest, --devices, --testscan harnesses
   Model/
     ScanSettings.swift         every knob, JSON-persisted
@@ -257,7 +260,7 @@ Sources/VueScanX/
     Panels/                    Input, Crop, Filter, Color, Output, Prefs
 ```
 
-Settings persist to `~/Library/Application Support/VueScanX/settings.json`.
+Settings persist to `~/Library/Application Support/MacScannerX/settings.json`.
 
 ---
 
