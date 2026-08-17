@@ -17,7 +17,7 @@ struct OutputWriter {
 
     // MARK: File naming
 
-    /// VueScan's `+` token means "auto-incrementing serial". `scan+.jpg` →
+    /// A `+` in the template is an auto-incrementing serial. `scan+.jpg` →
     /// `scan0001.jpg`, then `scan0002.jpg`. Multiple `+` widen the field.
     func resolveName(template: String, ext: String, in folder: URL) -> URL {
         var base = template
@@ -27,7 +27,7 @@ struct OutputWriter {
             if ch == "+" { acc.run += 1; acc.best = max(acc.best, acc.run) } else { acc.run = 0 }
         }.best
 
-        // Date tokens, matching VueScan's strftime-ish substitutions.
+        // strftime-style date tokens.
         let now = Date()
         let fmt = DateFormatter()
         fmt.dateFormat = "yyyy-MM-dd"

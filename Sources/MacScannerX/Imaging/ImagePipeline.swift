@@ -6,7 +6,7 @@ import Accelerate
 
 /// Applies the Crop / Filter / Color tab settings to a raw scan.
 ///
-/// Order matters and mirrors VueScan's own pipeline:
+/// Order matters:
 ///   geometry (crop → rotate → mirror) → restore → descreen → grain → tone/colour
 ///   → sharpen (always last, so it does not amplify noise the earlier stages removed)
 ///   → bilevel threshold, if the media is line art.
@@ -231,7 +231,7 @@ struct ImagePipeline {
     private func applyBrightnessOnly(_ image: CIImage) -> CIImage {
         let f = CIFilter.colorControls()
         f.inputImage = image
-        // VueScan's Brightness is a multiplier around 1.0; CIColorControls wants
+        // Brightness is exposed as a multiplier around 1.0; CIColorControls wants
         // an additive offset, so convert through a gamma-ish log mapping.
         f.brightness = Float((settings.brightness - 1.0) * 0.5)
         f.saturation = Float(settings.saturation)

@@ -351,7 +351,7 @@ final class ScanController: ObservableObject {
     }
 
     /// Re-save the already-scanned pages with the current settings, without
-    /// touching the scanner. This is VueScan's "Save" as distinct from "Scan".
+    /// touching the scanner — Save as distinct from Scan.
     func saveAgain() {
         guard !rawPages.isEmpty else {
             note("Nothing scanned yet — run Scan first.", .warn)
@@ -378,7 +378,7 @@ final class ScanController: ObservableObject {
     // MARK: Auto crop
 
     /// Finds the non-white bounding box of the preview and converts it to mm.
-    /// Same job as VueScan's "Crop size: Auto".
+    /// Backs "Crop size: Auto".
     private func autoDetectCrop(in image: CGImage, dpi: Int) {
         guard let box = DocumentEdgeFinder.contentBounds(of: image) else { return }
         let buffer = settings.autoCropBufferPercent / 100

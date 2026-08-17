@@ -33,7 +33,7 @@ struct MacScannerXApp: App {
 
             CommandGroup(replacing: .help) {
                 Button("MacScannerX Help") {
-                    NSWorkspace.shared.open(URL(string: "https://support.hp.com")!)
+                    NSWorkspace.shared.open(URL(string: "https://github.com/HassanNiazi/MacScannerX#readme")!)
                 }
             }
         }

@@ -1,8 +1,8 @@
 import SwiftUI
 
-/// VueScan's option rows are a fixed-width label on the left and a control on
-/// the right, packed tightly. Everything in the options panel goes through here
-/// so the columns line up across all six tabs.
+/// An option row is a fixed-width label on the left and a control on the right,
+/// packed tightly. Everything in the options panel goes through here so the
+/// columns line up across all six tabs.
 struct OptionRow<Content: View>: View {
     let label: String
     var help: String? = nil
@@ -25,8 +25,8 @@ struct OptionRow<Content: View>: View {
     }
 }
 
-/// Labelled slider with a live numeric readout, the way VueScan shows its
-/// brightness / threshold / quality controls.
+/// Labelled slider with a live numeric readout — brightness, threshold and
+/// quality all read better with the number visible while dragging.
 struct OptionSlider: View {
     let label: String
     @Binding var value: Double
@@ -106,7 +106,8 @@ struct OptionToggle: View {
 }
 
 /// Numeric field that stores millimetres but displays whatever unit the Prefs
-/// tab has selected — VueScan does the same trick for every crop dimension.
+/// tab has selected. Every crop dimension goes through it, so the conversion
+/// lives in one place instead of at each call site.
 struct MeasurementField: View {
     let label: String
     /// CGFloat rather than Double because every caller reads out of a CGPoint/CGSize.

@@ -1,7 +1,7 @@
 import Foundation
 import CoreGraphics
 
-// MARK: - Enums mirroring VueScan's option vocabulary
+// MARK: - The option vocabulary
 
 enum ScanTask: String, CaseIterable, Identifiable, Codable {
     case scanToFile = "Scan to file"
@@ -18,8 +18,8 @@ enum ScanSource: String, CaseIterable, Identifiable, Codable {
     var id: String { rawValue }
 }
 
-/// VueScan calls this "Media" — it drives both the device colour mode and the
-/// default tone/colour treatment applied downstream.
+/// Shown as "Media" in the Input tab. It drives both the device colour mode and
+/// the default tone/colour treatment applied downstream.
 enum MediaType: String, CaseIterable, Identifiable, Codable {
     case colorPhoto = "Color photo"
     case grayscalePhoto = "Grayscale photo"
@@ -178,7 +178,7 @@ enum BatchMode: String, CaseIterable, Identifiable, Codable {
 
 // MARK: - Settings container
 
-/// Every user-adjustable knob, grouped the way VueScan groups them in its tabs.
+/// Every user-adjustable knob, grouped the way the options panel groups them.
 /// Persisted verbatim to `~/Library/Application Support/MacScannerX/settings.json`.
 struct ScanSettings: Codable, Equatable {
 
