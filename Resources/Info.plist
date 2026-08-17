@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleName</key>
+	<string>VueScanX</string>
+	<key>CFBundleDisplayName</key>
+	<string>VueScanX</string>
+	<key>CFBundleExecutable</key>
+	<string>VueScanX</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.local.vuescanx</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0</string>
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>14.0</string>
+	<key>NSHighResolutionCapable</key>
+	<true/>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+	<key>NSSupportsAutomaticTermination</key>
+	<false/>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>VueScanX finds AirScan-capable scanners such as the HP DeskJet 2300 series on your local network.</string>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_uscan._tcp</string>
+		<string>_uscans._tcp</string>
+		<string>_scanner._tcp</string>
+	</array>
+	<key>NSDesktopFolderUsageDescription</key>
+	<string>VueScanX saves scanned files where you choose.</string>
+	<key>NSDocumentsFolderUsageDescription</key>
+	<string>VueScanX saves scanned files where you choose.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>VueScanX can save scans into your Pictures folder.</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+</dict>
+</plist>

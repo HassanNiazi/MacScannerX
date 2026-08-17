@@ -1,0 +1,18 @@
+# SwiftPM
+.build/
+.swiftpm/
+Package.resolved
+
+# Assembled app bundle — produced by ./build.sh
+build/
+
+# Scan output and probe artefacts
+*.jpg
+*.jpeg
+*.png
+*.tif
+*.tiff
+*.pdf
+
+# macOS
+.DS_Store
