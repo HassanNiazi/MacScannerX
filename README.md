@@ -1,20 +1,101 @@
+<div align="center">
+
+<img src="docs/icon.png" width="128" alt="MacScannerX icon">
+
 # MacScannerX
 
-A VueScan-style scanning app for macOS, built for the **HP DeskJet 2300 series**.
+**A free, open-source VueScan alternative for macOS.**
 
-Native SwiftUI. No Xcode required — Command Line Tools and SwiftPM are enough.
+Native SwiftUI scanner app for USB, AirScan/eSCL and Image Capture scanners —
+including HP DeskJet printers that macOS refuses to scan from at all.
 
-```bash
-./build.sh release
-open build/MacScannerX.app
-```
+[![CI](https://github.com/HassanNiazi/MacScannerX/actions/workflows/ci.yml/badge.svg)](https://github.com/HassanNiazi/MacScannerX/actions/workflows/ci.yml)
+[![Latest release](https://img.shields.io/github/v/release/HassanNiazi/MacScannerX?label=download)](https://github.com/HassanNiazi/MacScannerX/releases/latest)
+[![macOS 14+](https://img.shields.io/badge/macOS-14%2B-black?logo=apple)](https://www.apple.com/macos/)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
+
+<img src="docs/screenshot-hero.jpg" width="820" alt="MacScannerX scanning a page: options panel on the left, live preview with crop rectangle on the right">
+
+</div>
 
 ---
 
-## What it does
+## Download
 
-The six-tab options panel mirrors VueScan's layout, and every control is wired to
-real work — nothing is decorative.
+**[⬇ Download MacScannerX.dmg](https://github.com/HassanNiazi/MacScannerX/releases/latest/download/MacScannerX.dmg)** — macOS 14 Sonoma or later, universal (Apple silicon and Intel).
+
+1. Open the DMG and drag **MacScannerX** to **Applications**.
+2. First launch: right-click the app → **Open** → **Open**. The build is
+   ad-hoc signed rather than notarised, so Gatekeeper asks once. If macOS
+   blocks it outright, either allow it under **System Settings → Privacy &
+   Security → Open Anyway**, or clear the quarantine flag:
+
+   ```bash
+   xattr -dr com.apple.quarantine /Applications/MacScannerX.app
+   ```
+
+3. Optional — verify the download against the published checksum:
+
+   ```bash
+   shasum -a 256 -c MacScannerX.dmg.sha256
+   ```
+
+Prefer to build it yourself? See [Build from source](#build-from-source).
+
+---
+
+## Why MacScannerX
+
+VueScan is excellent software and has supported thousands of scanners for
+decades. It is also commercial, closed-source, and licensed per machine.
+MacScannerX is the free alternative: it covers the modern paths — USB,
+AirScan/eSCL over Wi-Fi, and anything Image Capture already understands — with
+the full options panel you would expect, and the source in the open.
+
+| | MacScannerX | VueScan |
+|---|---|---|
+| Price | Free | Paid licence, per machine |
+| Source | Open (Apache-2.0) | Closed |
+| Native macOS UI | SwiftUI, universal 2 | Cross-platform toolkit |
+| AirScan / eSCL over Wi-Fi | ✅ | ✅ |
+| Image Capture scanners | ✅ | ✅ |
+| HP LEDM over USB (no HP software) | ✅ | ✅ |
+| Searchable PDF (OCR) | ✅ Vision | ✅ |
+| Multi-page PDF and TIFF | ✅ | ✅ |
+| Tone curve, auto levels, descreen | ✅ | ✅ |
+| Film and slide scanning, colour negatives | ❌ | ✅ |
+| Legacy SCSI / FireWire / decades-old drivers | ❌ | ✅ |
+| Windows and Linux | ❌ macOS only | ✅ |
+
+Short version: if you scan documents and photos on a modern Mac, MacScannerX
+does the job for nothing. If you scan 35 mm negatives or own a scanner from
+2003, buy VueScan — it earns its price there.
+
+*MacScannerX is an independent project and is not affiliated with, endorsed by,
+or derived from Hamrick Software or VueScan.*
+
+---
+
+## Supported scanners
+
+- **Any AirScan / eSCL scanner** — most network printers and scanners made
+  since about 2015 (HP, Canon, Epson, Brother, Xerox…). Discovered over Bonjour;
+  no vendor software, no drivers.
+- **Any scanner macOS already sees** — anything with an Image Capture driver,
+  over USB or shared from another Mac.
+- **HP printers over USB with no driver at all** — driven directly over HP's
+  LEDM protocol. This is what makes cheap HP all-in-ones scan on a Mac when
+  *Printers & Scanners* insists they cannot.
+- **No scanner at all** — a built-in simulated device renders a synthetic test
+  page, so every control works before hardware arrives.
+
+Tested against an **HP DeskJet 2300 series** over both USB and Wi-Fi.
+
+---
+
+## Features
+
+Six tabs, and every control is wired to real work — nothing is decorative.
 
 | Tab | Controls |
 |---|---|
@@ -25,131 +106,37 @@ real work — nothing is decorative.
 | **Output** | folder, `scan+.jpg`-style auto-numbered names, JPEG / TIFF / PNG / PDF / OCR text, JPEG quality, TIFF compression, multi-page PDF, PDF paper size, searchable PDF, OCR language |
 | **Prefs** | units, advanced options, settings file location, reset |
 
-Plus a draggable crop rectangle on the preview with eight resize handles, a
-timestamped log pane, and a progress/status bar.
+Plus a draggable crop rectangle with eight resize handles, a timestamped log
+pane, and a progress bar that reports real backend stages.
+
+<div align="center">
+<img src="docs/screenshot-crop.jpg" width="420" alt="Crop tab with page presets and live output size">
+<img src="docs/screenshot-color.jpg" width="420" alt="Color tab with tone curve and per-channel gain">
+</div>
+
+Settings persist to `~/Library/Application Support/MacScannerX/settings.json`.
 
 ---
 
-## How it reaches the scanner
+## Build from source
 
-Four backends, tried together and merged into one device list.
+No Xcode required — Command Line Tools and SwiftPM are enough.
 
-### `LEDMBackend` — HP LEDM over USB
-
-**This is the one that makes a USB DeskJet 2300 work on macOS**, and it exists
-because nothing else can reach it:
-
-- the printer's USB printer interface is `7/1/`**`2`** (bidirectional), not
-  `7/1/`**`4`**, so it has **no IPP-USB** — therefore no driverless AirScan;
-- `system_profiler SPPrintersDataType` reports `Scanning support: No`, and the
-  CUPS queue is bound to a generic *HP LaserJet PCL 4/5* PPD;
-- `/Library/Image Capture/Devices/` is empty — no ICA scanner driver is
-  installed, so `ImageCaptureCore` enumerates nothing.
-
-The DeskJet 2300 exposes four USB interfaces:
-
-| Interface | Class | Subclass | Protocol | Endpoints | Role |
-|---|---|---|---|---|---|
-| 0 | 0xFF | 0xCC | 0x00 | 3 | HP MLC / IEEE-1284.4 |
-| 1 | 0x07 | 0x01 | 0x02 | 2 | bidirectional printer |
-| **2** | **0xFF** | **0x04** | **0x01** | **2** | **HP HTTP server** |
-| 3 | 0xFF | 0x04 | 0x01 | 2 | vendor |
-
-Interface 2 serves **bare HTTP/1.1 on its bulk pipes** — no MLC framing, no
-1284.4 packet layer. Behind it is HP's LEDM API:
-
-```
-GET  /DevMgmt/DiscoveryTree.xml   → resource tree
-GET  /Scan/ScanJobManifest.xml    → the scan resource map
-GET  /Scan/ScanCaps               → model, platen extent, resolutions, colour types
-POST /Scan/Jobs                   → 201 + Location
-GET  {Location}                   → poll until <BinaryURL> appears
-GET  {BinaryURL}                  → JPEG page data
-DELETE {Location}                 → release the job
+```bash
+git clone https://github.com/HassanNiazi/MacScannerX.git
+cd MacScannerX
+./build.sh release                    # → build/MacScannerX.app (host arch)
+./build.sh release universal dmg      # → universal .app + build/MacScannerX.dmg
+open build/MacScannerX.app
 ```
 
-Three device quirks drive the transport design in `USBHTTPClient`:
+`universal` cross-compiles both slices by triple and merges them with `lipo`,
+so it works on Command Line Tools alone — SwiftPM's `--arch` flag would need
+full Xcode.
 
-1. **Zero-length packets.** The server emits ZLPs while the carriage moves. A
-   read loop that treats a ZLP as end-of-response will see every reply arrive
-   one request late. The loop runs on a wall-clock deadline instead, and any
-   real data resets it.
-2. **`Connection: close` on every response,** so the pipes are drained and both
-   stalls cleared before each request.
-3. **Chunked bodies** far more often than `Content-Length`.
-
-`Sources/CHPUSB` is a small C target over IOKit's `IOUSBLib` that claims
-interface 2 and moves bytes; all HTTP and LEDM logic is Swift. One further
-IOKit quirk: `IOServiceMatching("IOUSBDevice")` **ignores an `idVendor` filter
-unless `idProduct` accompanies it**, so enumeration matches all USB devices and
-filters on vendor in code.
-
-Geometry is in 1/300 inch, the same unit eSCL uses. 1-bit (`K1`) is Raw-only on
-these devices, so scans are always acquired at 8 bits and thresholded in the
-pipeline — better results anyway.
-
-### `ImageCaptureBackend` — ImageCaptureCore
-
-Covers any scanner macOS already has a driver for: USB, Apple's AirScan, or a
-scanner shared from another Mac. Drives `ICScannerDevice` directly — opens a
-session, selects the flatbed functional unit, sets scan area in centimetres
-(TWAIN has no millimetre unit), snaps the requested dpi to the nearest value the
-hardware advertises, and receives pages file-based into a spool directory.
-
-### `ESCLBackend` — AirScan / eSCL over the network
-
-Reaches the printer over Wi-Fi with **no HP software installed at all**.
-Discovers `_uscan._tcp` / `_uscans._tcp` via Bonjour, parses
-`ScannerCapabilities` for the real platen size and resolution list, then
-`POST /eSCL/ScanJobs` → `GET {job}/NextDocument` → `DELETE {job}` to cancel.
-Printers ship self-signed certificates, so the HTTPS variant uses a permissive
-trust delegate.
-
-### `SimulatedBackend`
-
-A synthetic DeskJet 2300 that renders a scanner-plausible target (paper white
-with platen falloff, text blocks, a colour bar, a greyscale step wedge,
-registration marks, resolution-scaled sensor noise), so the whole app is
-exercisable with no hardware attached. It is dropped automatically as soon as
-real hardware appears — unless you pick it deliberately.
-
-LEDM is listed first when the same physical unit appears on more than one path,
-because on an HP with no ICA driver it is the only one that can actually
-acquire.
-
----
-
-## Image pipeline
-
-`ImagePipeline` applies the Crop/Filter/Color settings via Core Image, in
-VueScan's order:
-
-```
-crop → rotate → mirror → restore → descreen → grain → tone → colour → sharpen → threshold
-```
-
-Sharpening is deliberately last, so it does not amplify the noise the earlier
-stages removed. Notable pieces:
-
-- **Auto levels** reads a real 256-bin luminance histogram (`CIAreaHistogram`)
-  and clips at the requested percentiles — that is what the black/white point
-  sliders actually control.
-- **Auto white balance** and **restore colors** measure mean channel response
-  (`CIAreaAverage`) and apply a per-channel correction matrix.
-- **Descreen** picks its blur radius from `scan dpi ÷ screen frequency`, so
-  setting the frequency to match the original's print process matters.
-- **Auto crop** finds the page edges by thresholding a downscaled greyscale copy
-  and taking the non-white bounding box.
-
-Output goes through `CGImageDestination` (JPEG/PNG/TIFF, multi-page TIFF for
-feeder batches) and a `CGContext` PDF writer. Searchable PDFs run Vision OCR and
-draw the recognised text in rendering mode 3 — invisible, but selectable.
-
----
-
-## Verifying it
-
-The binary ships a self-test that drives the whole non-interactive path:
+The binary ships a self-test that drives the whole non-interactive path —
+simulated acquisition, the Core Image pipeline, every output format, and an
+offscreen render of all six tabs:
 
 ```bash
 build/MacScannerX.app/Contents/MacOS/MacScannerX --selftest /tmp/msx-check
@@ -170,10 +157,6 @@ build/MacScannerX.app/Contents/MacOS/MacScannerX --selftest /tmp/msx-check
 PASS — all checks green
 ```
 
-It also writes PNG captures of all six tabs to the output directory, rendered
-through a real `NSHostingView` (`ImageRenderer` cannot draw AppKit-backed views
-such as `HSplitView`).
-
 Two hardware diagnostics, which do touch the scanner:
 
 ```bash
@@ -184,83 +167,57 @@ build/MacScannerX.app/Contents/MacOS/MacScannerX --devices 8
 build/MacScannerX.app/Contents/MacOS/MacScannerX --testscan 200 /tmp/page.jpg
 ```
 
-Verified against a real DeskJet 2300 over USB:
-
-```
-HP LEDM over USB: 1 device(s)
-  • DeskJet 2300 All-in-One Printer series
-      transport  USB
-      bed        215.9×297.0 mm
-      sources    Flatbed
-      dpi        75, 100, 200, 300, 600, 1200
-PASS — scanner reachable
-```
+How the backends and the image pipeline actually work is written up in
+**[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**.
 
 ---
 
-## HP DeskJet 2300 notes
+## Troubleshooting
 
-Flatbed only — no document feeder, no duplex, no transparency unit. 1200 × 1200
-dpi optical sensor, A4 platen (215.9 × 297 mm), colour and 8-bit grey, values
-read live from `/Scan/ScanCaps`.
+**The scanner does not appear.**
 
-- **USB**: driven over HP LEDM. This works with no HP software and no ICA
-  driver — and it is the *only* thing that works, since the device has no
-  IPP-USB interface and macOS therefore exposes no scanner for it at all.
-- **Wi-Fi**: advertises AirScan; MacScannerX drives it over standard eSCL.
-
-If the scanner does not appear:
-
-- quit **HP Smart** and **HP Easy Scan** — they hold the USB interface open;
-- over Wi-Fi, allow MacScannerX under **System Settings → Privacy & Security →
-  Local Network**;
-- press the refresh button next to the Source picker to re-browse, or run
+- Quit **HP Smart** and **HP Easy Scan** — they hold the USB interface open.
+- Over Wi-Fi, allow MacScannerX under **System Settings → Privacy & Security →
+  Local Network**.
+- Press the refresh button next to the Source picker to re-browse, or run
   `--devices` for a per-backend report.
 
-Note that the printer showing up in **Printers & Scanners** proves nothing about
-scanning: that entry is a CUPS print queue. `system_profiler SPPrintersDataType`
-reports the truth under `Scanning support:`.
+**Printers & Scanners lists my printer, so scanning should work — right?**
+
+No. That entry is a CUPS *print* queue and proves nothing about scanning.
+`system_profiler SPPrintersDataType` reports the truth under `Scanning
+support:`. On a DeskJet 2300 it says `No` — MacScannerX scans from it anyway,
+over HP's LEDM protocol.
+
+**macOS says the app is damaged or from an unidentified developer.**
+
+Ad-hoc signing, not damage. See step 2 of [Download](#download).
 
 ---
 
-## Layout
+## FAQ
 
-```
-Package.swift
-build.sh                       compile + assemble + ad-hoc sign the .app
-Resources/
-  Info.plist                   bundle id, Bonjour services, local-network usage
-  MacScannerX.entitlements     unsandboxed; USB + network client
-  AppIcon.icns                 app icon, rendered by Tools/MakeAppIcon.swift
-Tools/
-  MakeAppIcon.swift            draws the icon in Core Graphics, one slot per size
-Sources/CHPUSB/
-  include/hpusb.h              C API: enumerate, open, bulk read/write, drain
-  hpusb.c                      IOKit IOUSBLib transport for HP's LEDM interface
-Sources/MacScannerX/
-  MacScannerXApp.swift         @main, menu commands, window sizing
-  SelfTest.swift               --selftest, --devices, --testscan harnesses
-  Model/
-    ScanSettings.swift         every knob, JSON-persisted
-    ScanController.swift       orchestration, discovery merge, debounced reprocess
-  Scanner/
-    ScannerBackend.swift       backend protocol and shared types
-    LEDMBackend.swift          HP LEDM over USB — scan caps, jobs, page fetch
-    USBHTTPClient.swift        HTTP/1.1 over USB bulk pipes (ZLP + chunked)
-    ImageCaptureBackend.swift  ImageCaptureCore (USB / AirScan / shared)
-    ESCLBackend.swift          Bonjour + eSCL REST, capability XML parsing
-    SimulatedBackend.swift     synthetic DeskJet 2300
-  Imaging/
-    ImagePipeline.swift        Core Image processing chain
-    OutputWriter.swift         JPEG/PNG/TIFF/PDF/OCR, file-name templates
-  UI/
-    ContentView.swift          split layout, tab strip, action buttons, log
-    PreviewCanvas.swift        preview with draggable crop rectangle
-    Controls.swift             VueScan-style option rows
-    Panels/                    Input, Crop, Filter, Color, Output, Prefs
-```
+**Is MacScannerX a full VueScan replacement?**
+For document and photo scanning on a modern Mac, yes. For film, slides, and
+scanners from the SCSI era, no — VueScan's driver library is unmatched there.
 
-Settings persist to `~/Library/Application Support/MacScannerX/settings.json`.
+**Can I scan from an HP DeskJet on macOS without installing HP Smart?**
+Yes. That is the case MacScannerX was built for. Nothing from HP needs to be
+installed, over USB or over Wi-Fi.
+
+**Does it work with AirScan / eSCL printers from other brands?**
+Yes — Canon, Epson, Brother, Xerox and others advertise `_uscan._tcp` over
+Bonjour and are driven with the same standard eSCL calls.
+
+**Is there free scanner software for macOS Sonoma and Sequoia?**
+This is one. macOS 14 or later, Apple silicon, Apache-2.0 licensed.
+
+**Can it make searchable PDFs?**
+Yes — Vision OCR runs over the scanned page and the recognised text is drawn
+invisibly on top, so the PDF stays selectable and searchable.
+
+**Where do my settings live?**
+`~/Library/Application Support/MacScannerX/settings.json`, as plain JSON.
 
 ---
 
@@ -273,3 +230,23 @@ Settings persist to `~/Library/Application Support/MacScannerX/settings.json`.
 | `⌘S` | Save again (re-process and re-write without re-scanning) |
 | `⌘.` | Cancel |
 | `⌘R` | Look for scanners |
+
+---
+
+## Contributing
+
+Issues and pull requests are welcome — especially reports from scanners other
+than the DeskJet 2300. When filing one, include the output of:
+
+```bash
+build/MacScannerX.app/Contents/MacOS/MacScannerX --devices 8
+```
+
+and the model and connection type. Run `--selftest` before opening a PR; CI runs
+the same check on every push.
+
+---
+
+## License
+
+[Apache License 2.0](LICENSE).

@@ -14,5 +14,9 @@ build/
 *.tiff
 *.pdf
 
+# …but the README's images are part of the repo
+!docs/*.png
+!docs/*.jpg
+
 # macOS
 .DS_Store
