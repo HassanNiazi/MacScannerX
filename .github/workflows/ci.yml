@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build and self-test
+    runs-on: macos-15
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Show toolchain
+        run: swift --version
+
+      - name: Build
+        run: ./build.sh release
+
+      - name: Self-test
+        # Drives acquisition, the Core Image pipeline, every output format and
+        # an offscreen render of all six tabs against the simulated scanner.
+        run: build/MacScannerX.app/Contents/MacOS/MacScannerX --selftest build/selftest
+
+      - name: Upload UI renders
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: selftest-output
+          path: build/selftest
+          if-no-files-found: warn
+
+      - name: Upload app bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: MacScannerX-app
+          path: build/MacScannerX.app

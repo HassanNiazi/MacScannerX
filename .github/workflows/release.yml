@@ -1,0 +1,50 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to build and publish (e.g. v1.0.0)"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build DMG and publish
+    runs-on: macos-15
+    timeout-minutes: 40
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag || github.ref }}
+
+      - name: Resolve version
+        id: version
+        run: |
+          TAG="${{ github.event.inputs.tag || github.ref_name }}"
+          echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+          echo "version=${TAG#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Build universal DMG
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          BUILD_NUMBER: ${{ github.run_number }}
+        run: ./build.sh release universal dmg
+
+      - name: Self-test the shipping build
+        run: build/MacScannerX.app/Contents/MacOS/MacScannerX --selftest build/selftest
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ steps.version.outputs.tag }}" \
+            build/MacScannerX.dmg \
+            build/MacScannerX.dmg.sha256 \
+            --title "MacScannerX ${{ steps.version.outputs.tag }}" \
+            --generate-notes
