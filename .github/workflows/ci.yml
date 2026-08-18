@@ -32,14 +32,14 @@ jobs:
 
       - name: Upload UI renders
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: selftest-output
           path: build/selftest
           if-no-files-found: warn
 
       - name: Upload app bundle
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: MacScannerX-app
           path: build/MacScannerX.app
