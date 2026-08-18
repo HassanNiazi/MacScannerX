@@ -35,6 +35,13 @@ struct MacScannerXApp: App {
                 Button("MacScannerX Help") {
                     NSWorkspace.shared.open(URL(string: "https://github.com/HassanNiazi/MacScannerX#readme")!)
                 }
+                Button("Report an Issue…") {
+                    NSWorkspace.shared.open(URL(string: "https://github.com/HassanNiazi/MacScannerX/issues")!)
+                }
+                Divider()
+                Button("Support MacScannerX on Patreon…") {
+                    NSWorkspace.shared.open(URL(string: "https://www.patreon.com/8966754/join")!)
+                }
             }
         }
     }

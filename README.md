@@ -254,6 +254,13 @@ the same check on every push.
 
 ---
 
+## Support the project
+
+MacScannerX is free and stays free. If it saved your scanner from the drawer,
+you can [support development on Patreon](https://www.patreon.com/8966754/join).
+
+---
+
 ## License
 
 [Apache License 2.0](LICENSE).
