@@ -10,8 +10,9 @@ Native SwiftUI scanner app for USB, AirScan/eSCL and Image Capture scanners —
 including HP DeskJet printers that macOS refuses to scan from at all.
 
 [![CI](https://github.com/HassanNiazi/MacScannerX/actions/workflows/ci.yml/badge.svg)](https://github.com/HassanNiazi/MacScannerX/actions/workflows/ci.yml)
-[![Latest release](https://img.shields.io/github/v/release/HassanNiazi/MacScannerX?label=download)](https://github.com/HassanNiazi/MacScannerX/releases/latest)
+[![Download](https://img.shields.io/badge/download-.dmg-1f7aec)](https://github.com/HassanNiazi/MacScannerX/releases/latest)
 [![macOS 14+](https://img.shields.io/badge/macOS-14%2B-black?logo=apple)](https://www.apple.com/macos/)
+[![Universal](https://img.shields.io/badge/universal-arm64%20%2B%20x86__64-555)](https://github.com/HassanNiazi/MacScannerX/releases/latest)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
 
 <img src="docs/screenshot-hero.jpg" width="820" alt="MacScannerX scanning a page: options panel on the left, live preview with crop rectangle on the right">
@@ -39,6 +40,11 @@ including HP DeskJet printers that macOS refuses to scan from at all.
    ```bash
    shasum -a 256 -c MacScannerX.dmg.sha256
    ```
+
+Every release is built and self-tested by CI before it is published; the DMG
+carries a universal binary and a SHA-256 sidecar. Release notes and earlier
+versions live on the
+[releases page](https://github.com/HassanNiazi/MacScannerX/releases).
 
 Prefer to build it yourself? See [Build from source](#build-from-source).
 
@@ -210,7 +216,8 @@ Yes — Canon, Epson, Brother, Xerox and others advertise `_uscan._tcp` over
 Bonjour and are driven with the same standard eSCL calls.
 
 **Is there free scanner software for macOS Sonoma and Sequoia?**
-This is one. macOS 14 or later, Apple silicon, Apache-2.0 licensed.
+This is one. macOS 14 or later, universal for Apple silicon and Intel,
+Apache-2.0 licensed.
 
 **Can it make searchable PDFs?**
 Yes — Vision OCR runs over the scanned page and the recognised text is drawn
