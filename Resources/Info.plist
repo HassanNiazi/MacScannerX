@@ -9,7 +9,7 @@
 	<key>CFBundleExecutable</key>
 	<string>MacScannerX</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.local.macscannerx</string>
+	<string>io.github.hassanniazi.macscannerx</string>
 	<key>CFBundleIconFile</key>
 	<string>AppIcon</string>
 	<key>CFBundleIconName</key>
