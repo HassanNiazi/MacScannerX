@@ -25,21 +25,45 @@ including HP DeskJet printers that macOS refuses to scan from at all.
 
 **[⬇ Download MacScannerX.dmg](https://github.com/HassanNiazi/MacScannerX/releases/latest/download/MacScannerX.dmg)** — macOS 14 Sonoma or later, universal (Apple silicon and Intel).
 
+> [!IMPORTANT]
+> **macOS will refuse to open MacScannerX on first launch.** You will see
+> *"MacScannerX.app" Not Opened — Apple could not verify it is free of
+> malware.* This is expected. The app is not signed with an Apple Developer
+> ID and not notarised, because that requires a paid Apple Developer Program
+> membership (US$99/year) that this free project does not have. Nothing is
+> wrong with the download — macOS shows the same dialog for every app that
+> is not notarised. The steps below get you past it once; macOS remembers
+> the choice.
+
 1. Open the DMG and drag **MacScannerX** to **Applications**.
-2. First launch: right-click the app → **Open** → **Open**. The build is
-   ad-hoc signed rather than notarised, so Gatekeeper asks once. If macOS
-   blocks it outright, either allow it under **System Settings → Privacy &
-   Security → Open Anyway**, or clear the quarantine flag:
+2. Double-click the app. macOS blocks it with the dialog above — click
+   **Done**.
+3. Open **System Settings → Privacy & Security**, scroll down to the
+   *Security* section. You will see *"MacScannerX" was blocked to protect
+   your Mac.* Click **Open Anyway**, then **Open Anyway** again in the
+   confirmation, and authenticate.
+4. The app opens. From now on it launches normally.
+
+   Prefer the terminal? One command does the same thing by clearing the
+   quarantine flag:
 
    ```bash
    xattr -dr com.apple.quarantine /Applications/MacScannerX.app
    ```
 
-3. Optional — verify the download against the published checksum:
+5. Optional — verify the download against the published checksum:
 
    ```bash
    shasum -a 256 -c MacScannerX.dmg.sha256
    ```
+
+On macOS 14 Sonoma and earlier, right-click the app → **Open** → **Open**
+also works and skips step 3.
+
+If you want to check the download for yourself before trusting it: the
+[source is public](https://github.com/HassanNiazi/MacScannerX), every release
+is [built by GitHub Actions](https://github.com/HassanNiazi/MacScannerX/actions/workflows/release.yml)
+from a tagged commit, and the checksum above matches what CI produced.
 
 Every release is built and self-tested by CI before it is published; the DMG
 carries a universal binary and a SHA-256 sidecar. Release notes and earlier
@@ -195,9 +219,12 @@ No. That entry is a CUPS *print* queue and proves nothing about scanning.
 support:`. On a DeskJet 2300 it says `No` — MacScannerX scans from it anyway,
 over HP's LEDM protocol.
 
-**macOS says the app is damaged or from an unidentified developer.**
+**macOS says the app is damaged, could not be verified, or is from an
+unidentified developer.**
 
-Ad-hoc signing, not damage. See step 2 of [Download](#download).
+Not damage — the app is not notarised, because that needs a paid Apple
+Developer account this project does not have. See the steps under
+[Download](#download).
 
 ---
 

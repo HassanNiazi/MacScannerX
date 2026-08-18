@@ -84,6 +84,11 @@
         },
         {
           "@type": "Question",
+          "name": "Why does macOS say Apple could not verify MacScannerX is free of malware?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Because the app is not notarised. Notarisation requires an Apple Developer Program membership at US$99 a year, which this free project does not have. macOS shows the same dialog for every non-notarised app. Open System Settings, go to Privacy & Security, and click Open Anyway; the app launches normally from then on. Alternatively run: xattr -dr com.apple.quarantine /Applications/MacScannerX.app" }
+        },
+        {
+          "@type": "Question",
           "name": "Which macOS versions and Macs are supported?",
           "acceptedAnswer": { "@type": "Answer", "text": "macOS 14 Sonoma or later. The download is a universal binary that runs natively on both Apple silicon and Intel Macs." }
         }
@@ -106,6 +111,9 @@
     --ok: #0a7d45;
     --no: #b23b3b;
     --shadow: 0 1px 2px rgba(16, 24, 40, .06), 0 12px 32px rgba(16, 24, 40, .08);
+    --warn: #c47a00;
+    --warn-bg: #fff8e6;
+    --warn-line: #f0dca8;
   }
   @media (prefers-color-scheme: dark) {
     :root {
@@ -120,6 +128,9 @@
       --ok: #4ad991;
       --no: #ff8a8a;
       --shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 16px 40px rgba(0, 0, 0, .45);
+      --warn: #f2b544;
+      --warn-bg: #2a2410;
+      --warn-line: #4d3f14;
     }
   }
 
@@ -182,6 +193,14 @@
   td.y { color: var(--ok); font-weight: 600; }
   td.n { color: var(--no); font-weight: 600; }
 
+  .notice {
+    border: 1px solid var(--warn-line); background: var(--warn-bg);
+    border-left: 4px solid var(--warn); border-radius: 10px;
+    padding: 16px 18px; margin: 20px 0 24px;
+  }
+  .notice strong { color: var(--text); }
+  .notice p { margin: 0 0 8px; }
+  .notice p:last-child { margin: 0; }
   .steps { padding-left: 20px; }
   .steps li { margin-bottom: 10px; }
   code, pre {
@@ -241,6 +260,10 @@
       </div>
       <p class="fineprint">
         macOS 14 Sonoma or later · universal (Apple silicon and Intel) · Apache-2.0 · ~2&nbsp;MB
+      </p>
+      <p class="fineprint">
+        Not notarised — macOS will block the first launch.
+        <a href="#download">Two clicks to allow it</a>, explained below.
       </p>
     </div>
 
@@ -388,14 +411,30 @@
       <a class="btn btn-secondary" href="https://github.com/HassanNiazi/MacScannerX/releases">Release notes</a>
     </div>
 
+    <div class="notice" role="note">
+      <p><strong>macOS will refuse to open MacScannerX on first launch.</strong>
+      You will see <em>“MacScannerX.app” Not Opened — Apple could not verify it
+      is free of malware.</em> This is expected.</p>
+      <p>The app is not signed with an Apple Developer ID and not notarised,
+      because that requires a paid Apple Developer Program membership
+      (US$99/year) that this free project does not have. Nothing is wrong with
+      the download — macOS shows the same dialog for every app that is not
+      notarised. The steps below get you past it once; macOS remembers the
+      choice.</p>
+    </div>
+
     <ol class="steps">
       <li>Open the DMG and drag <strong>MacScannerX</strong> to <strong>Applications</strong>.</li>
-      <li>
-        First launch: right-click the app and choose <strong>Open</strong>. The
-        build is ad-hoc signed rather than notarised, so Gatekeeper asks once. If
-        macOS blocks it outright, allow it under <strong>System Settings →
-        Privacy &amp; Security → Open Anyway</strong>, or clear the quarantine
-        flag:
+      <li>Double-click the app. macOS blocks it with the dialog above — click
+        <strong>Done</strong>.</li>
+      <li>Open <strong>System Settings → Privacy &amp; Security</strong> and
+        scroll down to the <em>Security</em> section. You will see
+        <em>“MacScannerX” was blocked to protect your Mac.</em> Click
+        <strong>Open Anyway</strong>, then <strong>Open Anyway</strong> again in
+        the confirmation, and authenticate.</li>
+      <li>The app opens. From now on it launches normally.
+        <p class="fineprint" style="margin:8px 0 0;">Prefer the terminal? One
+        command does the same thing by clearing the quarantine flag:</p>
         <pre><code>xattr -dr com.apple.quarantine /Applications/MacScannerX.app</code></pre>
       </li>
       <li>
@@ -403,6 +442,19 @@
         <pre><code>shasum -a 256 -c MacScannerX.dmg.sha256</code></pre>
       </li>
     </ol>
+
+    <p class="fineprint">
+      On macOS 14 Sonoma and earlier, right-click the app → <strong>Open</strong>
+      → <strong>Open</strong> also works and skips step 3.
+    </p>
+
+    <p class="fineprint">
+      Want to check the download for yourself before trusting it? The
+      <a href="https://github.com/HassanNiazi/MacScannerX">source is public</a>,
+      every release is
+      <a href="https://github.com/HassanNiazi/MacScannerX/actions/workflows/release.yml">built by GitHub Actions</a>
+      from a tagged commit, and the checksum above is the one CI produced.
+    </p>
 
     <p class="fineprint">
       Every release is built and self-tested by CI before it is published. Prefer
@@ -457,6 +509,17 @@
       <summary>Which macOS versions and Macs are supported?</summary>
       <p>macOS 14 Sonoma or later. The download is a universal binary, native on
       both Apple silicon and Intel.</p>
+    </details>
+
+    <details>
+      <summary>Why does macOS say “Apple could not verify MacScannerX is free of malware”?</summary>
+      <p>Because the app is not notarised. Notarisation requires an Apple
+      Developer Program membership at US$99 a year, which this free project
+      does not have. macOS shows the same dialog for every non-notarised app;
+      it is not a judgement about this one. Follow the steps under
+      <a href="#download">Download and install</a> — <strong>System Settings →
+      Privacy &amp; Security → Open Anyway</strong> — and it opens normally from
+      then on.</p>
     </details>
 
     <details>
