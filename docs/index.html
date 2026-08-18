@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>MacScannerX — Free VueScan Alternative for macOS</title>
+<meta name="description" content="MacScannerX is a free, open-source VueScan alternative for macOS. Scan over USB, AirScan/eSCL and Image Capture — including HP DeskJet printers macOS will not scan from. Universal, macOS 14+, Apache-2.0.">
+<link rel="canonical" href="https://hassanniazi.github.io/MacScannerX/">
+<meta name="author" content="Hassan Niazi">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#151c2e">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="MacScannerX">
+<meta property="og:url" content="https://hassanniazi.github.io/MacScannerX/">
+<meta property="og:title" content="MacScannerX — Free VueScan Alternative for macOS">
+<meta property="og:description" content="Free, open-source macOS scanner app. USB, AirScan/eSCL and Image Capture — including HP printers macOS will not scan from.">
+<meta property="og:image" content="https://hassanniazi.github.io/MacScannerX/social-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="MacScannerX app window beside its icon and tagline">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MacScannerX — Free VueScan Alternative for macOS">
+<meta name="twitter:description" content="Free, open-source macOS scanner app. USB, AirScan/eSCL and Image Capture — including HP printers macOS will not scan from.">
+<meta name="twitter:image" content="https://hassanniazi.github.io/MacScannerX/social-card.png">
+
+<link rel="icon" href="icon.png" type="image/png">
+<link rel="apple-touch-icon" href="icon.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "MacScannerX",
+      "description": "A free, open-source VueScan alternative for macOS. Scans over HP LEDM (USB), AirScan/eSCL and ImageCaptureCore, with crop, filter and colour controls and JPEG, TIFF, PNG and searchable PDF output.",
+      "url": "https://hassanniazi.github.io/MacScannerX/",
+      "downloadUrl": "https://github.com/HassanNiazi/MacScannerX/releases/latest/download/MacScannerX.dmg",
+      "softwareVersion": "1.0.0",
+      "applicationCategory": "UtilitiesApplication",
+      "applicationSubCategory": "Scanner software",
+      "operatingSystem": "macOS 14 Sonoma or later",
+      "processorRequirements": "Apple silicon or Intel (universal)",
+      "fileFormat": "application/x-apple-diskimage",
+      "license": "https://www.apache.org/licenses/LICENSE-2.0",
+      "isAccessibleForFree": true,
+      "author": { "@type": "Person", "name": "Hassan Niazi" },
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "screenshot": "https://hassanniazi.github.io/MacScannerX/screenshot-hero.jpg",
+      "featureList": [
+        "Scan over USB with no vendor driver, using HP LEDM",
+        "AirScan / eSCL scanning over Wi-Fi",
+        "ImageCaptureCore support for any scanner macOS already sees",
+        "Searchable PDF via Vision OCR",
+        "Multi-page PDF and TIFF",
+        "Tone curve, auto levels, descreen and grain reduction"
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is there a free alternative to VueScan for macOS?",
+          "acceptedAnswer": { "@type": "Answer", "text": "MacScannerX is a free, open-source scanner app for macOS licensed under Apache-2.0. For document and photo scanning on a modern Mac it covers the same ground as VueScan: USB, AirScan/eSCL over Wi-Fi, and any scanner Image Capture already understands." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I scan from an HP DeskJet on macOS without HP Smart?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. MacScannerX drives HP printers directly over HP's LEDM protocol on the printer's USB HTTP interface, so nothing from HP needs to be installed. This works on models such as the DeskJet 2300 series that macOS reports as having no scanning support at all." }
+        },
+        {
+          "@type": "Question",
+          "name": "Does MacScannerX work with AirScan and eSCL printers from other brands?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Canon, Epson, Brother, Xerox and others advertise _uscan._tcp over Bonjour and are driven with the same standard eSCL calls, with no vendor software installed." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can MacScannerX create searchable PDFs?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Vision OCR runs over the scanned page and the recognised text is drawn invisibly on top, so the PDF stays selectable and searchable. Multi-page PDF and multi-page TIFF are both supported." }
+        },
+        {
+          "@type": "Question",
+          "name": "Which macOS versions and Macs are supported?",
+          "acceptedAnswer": { "@type": "Answer", "text": "macOS 14 Sonoma or later. The download is a universal binary that runs natively on both Apple silicon and Intel Macs." }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg-alt: #f5f7fb;
+    --surface: #ffffff;
+    --text: #161c28;
+    --muted: #55617a;
+    --line: #dfe5ef;
+    --accent: #0f6fd6;
+    --accent-ink: #ffffff;
+    --ok: #0a7d45;
+    --no: #b23b3b;
+    --shadow: 0 1px 2px rgba(16, 24, 40, .06), 0 12px 32px rgba(16, 24, 40, .08);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0e1320;
+      --bg-alt: #131a2a;
+      --surface: #161e30;
+      --text: #eaeffa;
+      --muted: #9fadc6;
+      --line: #26314a;
+      --accent: #47c3ff;
+      --accent-ink: #06121f;
+      --ok: #4ad991;
+      --no: #ff8a8a;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 16px 40px rgba(0, 0, 0, .45);
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 17px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+  section { padding: 72px 0; border-top: 1px solid var(--line); }
+  section:first-of-type { border-top: 0; }
+  h1, h2, h3 { line-height: 1.2; letter-spacing: -.02em; margin: 0 0 16px; }
+  h1 { font-size: clamp(2.4rem, 6vw, 3.6rem); }
+  h2 { font-size: clamp(1.6rem, 3.4vw, 2.1rem); }
+  h3 { font-size: 1.1rem; }
+  p { margin: 0 0 16px; }
+  a { color: var(--accent); }
+  .lede { font-size: clamp(1.1rem, 2.2vw, 1.3rem); color: var(--muted); max-width: 62ch; }
+
+  /* Hero */
+  header {
+    background: linear-gradient(165deg, var(--bg-alt), var(--bg) 70%);
+    padding: 64px 0 8px;
+  }
+  .hero { display: grid; gap: 28px; }
+  .brand { display: flex; align-items: center; gap: 16px; }
+  .brand img { width: 72px; height: 72px; }
+  .brand span { font-size: 1.5rem; font-weight: 700; letter-spacing: -.02em; }
+  .cta { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 8px 0 4px; }
+  .btn {
+    display: inline-block; padding: 13px 24px; border-radius: 10px;
+    font-weight: 600; text-decoration: none; border: 1px solid transparent;
+  }
+  .btn-primary { background: var(--accent); color: var(--accent-ink); }
+  .btn-secondary { border-color: var(--line); color: var(--text); background: var(--surface); }
+  .fineprint { font-size: .93rem; color: var(--muted); margin: 0; }
+  .shot {
+    width: 100%; height: auto; border-radius: 12px;
+    border: 1px solid var(--line); box-shadow: var(--shadow); margin-top: 20px;
+  }
+
+  /* Content blocks */
+  .grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+  @media (min-width: 760px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+  .card {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 12px; padding: 22px;
+  }
+  .card h3 { margin-bottom: 8px; }
+  .card p { margin: 0; color: var(--muted); font-size: .97rem; }
+
+  .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table { border-collapse: collapse; width: 100%; min-width: 520px; font-size: .97rem; }
+  th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--line); }
+  thead th { font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+  td.y { color: var(--ok); font-weight: 600; }
+  td.n { color: var(--no); font-weight: 600; }
+
+  .steps { padding-left: 20px; }
+  .steps li { margin-bottom: 10px; }
+  code, pre {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+    font-size: .9em;
+  }
+  pre {
+    background: var(--bg-alt); border: 1px solid var(--line); border-radius: 10px;
+    padding: 14px 16px; overflow-x: auto;
+  }
+  code:not(pre code) {
+    background: var(--bg-alt); border: 1px solid var(--line);
+    border-radius: 5px; padding: 1px 5px;
+  }
+
+  details {
+    border-bottom: 1px solid var(--line); padding: 16px 0;
+  }
+  summary { cursor: pointer; font-weight: 600; font-size: 1.03rem; }
+  details p { margin: 12px 0 0; color: var(--muted); }
+
+  .shots { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+  .shots img { width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line); }
+  figure { margin: 0; }
+  figcaption { font-size: .88rem; color: var(--muted); margin-top: 8px; }
+
+  footer {
+    border-top: 1px solid var(--line); padding: 36px 0 56px;
+    color: var(--muted); font-size: .92rem;
+  }
+  footer a { color: inherit; }
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="wrap hero">
+    <div class="brand">
+      <img src="icon.png" alt="MacScannerX app icon" width="72" height="72">
+      <span>MacScannerX</span>
+    </div>
+
+    <div>
+      <h1>A free VueScan alternative for macOS</h1>
+      <p class="lede">
+        Native SwiftUI scanner app for USB, AirScan/eSCL and Image Capture
+        scanners — including HP printers macOS refuses to scan from at all.
+        Open source, no licence key, no per-machine fee.
+      </p>
+    </div>
+
+    <div>
+      <div class="cta">
+        <a class="btn btn-primary" href="https://github.com/HassanNiazi/MacScannerX/releases/latest/download/MacScannerX.dmg">Download for macOS</a>
+        <a class="btn btn-secondary" href="https://github.com/HassanNiazi/MacScannerX">View source on GitHub</a>
+      </div>
+      <p class="fineprint">
+        macOS 14 Sonoma or later · universal (Apple silicon and Intel) · Apache-2.0 · ~2&nbsp;MB
+      </p>
+    </div>
+
+    <img class="shot" src="screenshot-hero.jpg" width="1600" height="1084"
+         alt="MacScannerX scanning a page, with the options panel on the left and a live preview with a crop rectangle on the right">
+  </div>
+</header>
+
+<main>
+
+<section id="why">
+  <div class="wrap">
+    <h2>Why MacScannerX</h2>
+    <p class="lede">
+      VueScan is excellent software and has supported thousands of scanners for
+      decades. It is also commercial, closed-source and licensed per machine.
+      MacScannerX covers the modern paths for free, with the source in the open.
+    </p>
+
+    <div class="table-scroll">
+      <table>
+        <caption class="fineprint" style="text-align:left; padding-bottom:10px;">
+          Feature comparison, written to be honest in both directions.
+        </caption>
+        <thead>
+          <tr><th scope="col">Feature</th><th scope="col">MacScannerX</th><th scope="col">VueScan</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Price</th><td class="y">Free</td><td>Paid licence, per machine</td></tr>
+          <tr><th scope="row">Source code</th><td class="y">Open (Apache-2.0)</td><td>Closed</td></tr>
+          <tr><th scope="row">Native macOS UI</th><td class="y">SwiftUI, universal</td><td>Cross-platform toolkit</td></tr>
+          <tr><th scope="row">AirScan / eSCL over Wi-Fi</th><td class="y">Yes</td><td class="y">Yes</td></tr>
+          <tr><th scope="row">Image Capture scanners</th><td class="y">Yes</td><td class="y">Yes</td></tr>
+          <tr><th scope="row">HP LEDM over USB, no HP software</th><td class="y">Yes</td><td class="y">Yes</td></tr>
+          <tr><th scope="row">Searchable PDF (OCR)</th><td class="y">Yes, via Vision</td><td class="y">Yes</td></tr>
+          <tr><th scope="row">Film, slides, colour negatives</th><td class="n">No</td><td class="y">Yes</td></tr>
+          <tr><th scope="row">Legacy SCSI / FireWire scanners</th><td class="n">No</td><td class="y">Yes</td></tr>
+          <tr><th scope="row">Windows and Linux</th><td class="n">macOS only</td><td class="y">Yes</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="margin-top:20px;">
+      Short version: if you scan documents and photos on a modern Mac,
+      MacScannerX does the job for nothing. If you scan 35&nbsp;mm negatives or
+      own a scanner from 2003, buy VueScan — it earns its price there.
+    </p>
+  </div>
+</section>
+
+<section id="scanners">
+  <div class="wrap">
+    <h2>Works with your scanner</h2>
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>AirScan / eSCL over Wi-Fi</h3>
+        <p>Most network printers and scanners made since about 2015 — HP, Canon,
+        Epson, Brother, Xerox. Found over Bonjour, driven with standard eSCL. No
+        vendor software, no drivers.</p>
+      </div>
+      <div class="card">
+        <h3>Anything macOS already sees</h3>
+        <p>Any scanner with an Image Capture driver, over USB or shared from
+        another Mac, driven through ImageCaptureCore.</p>
+      </div>
+      <div class="card">
+        <h3>HP printers with no driver at all</h3>
+        <p>Driven directly over HP's LEDM protocol on the printer's USB HTTP
+        interface. This is what makes cheap HP all-in-ones scan on a Mac when
+        <em>Printers &amp; Scanners</em> insists they cannot.</p>
+      </div>
+      <div class="card">
+        <h3>No scanner yet</h3>
+        <p>A built-in simulated device renders a synthetic test page, so every
+        control works before the hardware arrives.</p>
+      </div>
+    </div>
+    <p class="fineprint" style="margin-top:20px;">
+      Tested against an HP DeskJet 2300 series over both USB and Wi-Fi.
+    </p>
+  </div>
+</section>
+
+<section id="features">
+  <div class="wrap">
+    <h2>Every control does real work</h2>
+    <p class="lede">
+      Six tabs of options — nothing decorative, nothing that only looks the part.
+    </p>
+
+    <div class="grid">
+      <div class="card">
+        <h3>Input</h3>
+        <p>Device and source, media type, bit depth, scan and preview resolution,
+        samples, rotation, mirror, auto-skew, auto-rotate, batch scanning.</p>
+      </div>
+      <div class="card">
+        <h3>Crop</h3>
+        <p>Auto, maximum, manual, A4, A5, Letter, Legal, 4×6, 5×7, 8×10; offsets,
+        aspect lock, border, and a live output-size and file-size readout.</p>
+      </div>
+      <div class="card">
+        <h3>Filter</h3>
+        <p>Restore colours and fading, descreen by screen frequency, grain
+        reduction, sharpening, line-art threshold.</p>
+      </div>
+      <div class="card">
+        <h3>Color</h3>
+        <p>Auto levels from a real histogram, auto white balance, tone curve with
+        a live graph, brightness, saturation, per-channel gain, colour space.</p>
+      </div>
+      <div class="card">
+        <h3>Output</h3>
+        <p>JPEG, TIFF, PNG, PDF and OCR text; auto-numbered file-name templates,
+        multi-page PDF and TIFF, searchable PDF with a choice of OCR language.</p>
+      </div>
+      <div class="card">
+        <h3>Preview</h3>
+        <p>Draggable crop rectangle with eight resize handles, a timestamped log
+        pane, and a progress bar that reports the real backend stages.</p>
+      </div>
+    </div>
+
+    <div class="shots" style="margin-top:28px;">
+      <figure>
+        <img src="screenshot-crop.jpg" width="1600" height="1084"
+             alt="MacScannerX Crop tab showing page-size presets and a live output-size readout">
+        <figcaption>Crop presets, aspect lock and a live output-size readout.</figcaption>
+      </figure>
+      <figure>
+        <img src="screenshot-color.jpg" width="1600" height="1084"
+             alt="MacScannerX Color tab showing the tone curve graph and per-channel gain sliders">
+        <figcaption>Tone curve, auto levels and per-channel gain.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section id="download">
+  <div class="wrap">
+    <h2>Download and install</h2>
+
+    <div class="cta">
+      <a class="btn btn-primary" href="https://github.com/HassanNiazi/MacScannerX/releases/latest/download/MacScannerX.dmg">Download MacScannerX.dmg</a>
+      <a class="btn btn-secondary" href="https://github.com/HassanNiazi/MacScannerX/releases">Release notes</a>
+    </div>
+
+    <ol class="steps">
+      <li>Open the DMG and drag <strong>MacScannerX</strong> to <strong>Applications</strong>.</li>
+      <li>
+        First launch: right-click the app and choose <strong>Open</strong>. The
+        build is ad-hoc signed rather than notarised, so Gatekeeper asks once. If
+        macOS blocks it outright, allow it under <strong>System Settings →
+        Privacy &amp; Security → Open Anyway</strong>, or clear the quarantine
+        flag:
+        <pre><code>xattr -dr com.apple.quarantine /Applications/MacScannerX.app</code></pre>
+      </li>
+      <li>
+        Optional — check the download against the published checksum:
+        <pre><code>shasum -a 256 -c MacScannerX.dmg.sha256</code></pre>
+      </li>
+    </ol>
+
+    <p class="fineprint">
+      Every release is built and self-tested by CI before it is published. Prefer
+      to build it yourself? <code>./build.sh release universal dmg</code> needs
+      only the Command Line Tools —
+      <a href="https://github.com/HassanNiazi/MacScannerX#build-from-source">instructions</a>.
+    </p>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <h2>Frequently asked questions</h2>
+
+    <details open>
+      <summary>Is there a free alternative to VueScan for macOS?</summary>
+      <p>MacScannerX is one: free, open source, Apache-2.0. For document and
+      photo scanning on a modern Mac it covers the same ground — USB,
+      AirScan/eSCL over Wi-Fi, and any scanner Image Capture already
+      understands.</p>
+    </details>
+
+    <details>
+      <summary>Can I scan from an HP DeskJet on macOS without HP Smart?</summary>
+      <p>Yes — that is the case this app was built for. MacScannerX talks to the
+      printer over HP's LEDM protocol on its USB HTTP interface, so nothing from
+      HP needs to be installed. It works on models such as the DeskJet 2300
+      series that macOS reports as having no scanning support at all.</p>
+    </details>
+
+    <details>
+      <summary>Does it work with AirScan / eSCL printers from other brands?</summary>
+      <p>Yes. Canon, Epson, Brother, Xerox and others advertise
+      <code>_uscan._tcp</code> over Bonjour and are driven with the same standard
+      eSCL calls.</p>
+    </details>
+
+    <details>
+      <summary>Can it make searchable PDFs?</summary>
+      <p>Yes. Vision OCR runs over the scanned page and the recognised text is
+      drawn invisibly on top, so the PDF stays selectable and searchable.
+      Multi-page PDF and multi-page TIFF are both supported.</p>
+    </details>
+
+    <details>
+      <summary>Which macOS versions and Macs are supported?</summary>
+      <p>macOS 14 Sonoma or later. The download is a universal binary, native on
+      both Apple silicon and Intel.</p>
+    </details>
+
+    <details>
+      <summary>My printer shows up in Printers &amp; Scanners — why can it not scan?</summary>
+      <p>That entry is a CUPS <em>print</em> queue and proves nothing about
+      scanning. <code>system_profiler SPPrintersDataType</code> reports the truth
+      under <code>Scanning support:</code>. On a DeskJet 2300 it says
+      <code>No</code> — MacScannerX scans from it anyway.</p>
+    </details>
+
+    <details>
+      <summary>Where are my settings stored?</summary>
+      <p><code>~/Library/Application Support/MacScannerX/settings.json</code>, as
+      plain JSON you can read and edit.</p>
+    </details>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>
+      <a href="https://github.com/HassanNiazi/MacScannerX">Source</a> ·
+      <a href="https://github.com/HassanNiazi/MacScannerX/blob/master/docs/ARCHITECTURE.md">Architecture</a> ·
+      <a href="https://github.com/HassanNiazi/MacScannerX/issues">Issues</a> ·
+      <a href="https://github.com/HassanNiazi/MacScannerX/blob/master/LICENSE">Apache-2.0</a>
+    </p>
+    <p>
+      MacScannerX is an independent project and is not affiliated with, endorsed
+      by, or derived from Hamrick Software or VueScan. VueScan is a trademark of
+      Hamrick Software. Apple, macOS and AirScan are trademarks of Apple Inc.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

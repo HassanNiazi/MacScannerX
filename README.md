@@ -10,7 +10,7 @@ Native SwiftUI scanner app for USB, AirScan/eSCL and Image Capture scanners —
 including HP DeskJet printers that macOS refuses to scan from at all.
 
 [![CI](https://github.com/HassanNiazi/MacScannerX/actions/workflows/ci.yml/badge.svg)](https://github.com/HassanNiazi/MacScannerX/actions/workflows/ci.yml)
-[![Download](https://img.shields.io/badge/download-.dmg-1f7aec)](https://github.com/HassanNiazi/MacScannerX/releases/latest)
+[![Latest release](https://img.shields.io/github/v/release/HassanNiazi/MacScannerX?label=download&color=1f7aec)](https://github.com/HassanNiazi/MacScannerX/releases/latest)
 [![macOS 14+](https://img.shields.io/badge/macOS-14%2B-black?logo=apple)](https://www.apple.com/macos/)
 [![Universal](https://img.shields.io/badge/universal-arm64%20%2B%20x86__64-555)](https://github.com/HassanNiazi/MacScannerX/releases/latest)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
